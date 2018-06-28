@@ -10,25 +10,46 @@ const gcs = require('@google-cloud/storage')({
 
 const bucket = gcs.bucket(bucketName);
 
-const filePath = `./daily_val_cash_30_05_2018.csv`;
-const uploadTo = `csv_mpai/daily_val_cash.csv`;
-const fileMime = mime.getType(filePath);
+// const filePath = `./gg.jpg`;
+// const uploadTo = `img/gg.jpg`;
+// const fileMime = mime.getType(filePath);
 
-bucket.upload(filePath, {
-  destination: uploadTo,
-  public: true,
-  metadata: { contentType: fileMime, cacheControl: "public, max-age=300" }
-}, function (err, file) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  console.log(createPublicFileURL(uploadTo));
-});
+// bucket.upload(filePath, {
+//   destination: uploadTo,
+//   public: true,
+//   metadata: { contentType: fileMime, cacheControl: "public, max-age=300" }
+// }, function (err, file) {
+//   if (err) {
+//     console.log(err);
+//     return;
+//   }
+//   console.log(createPublicFileURL(uploadTo));
+// });
 
-function createPublicFileURL(storageName) {
-  return `http://storage.googleapis.com/${bucketName}/${encodeURIComponent(storageName)}`;
-}
+// function createPublicFileURL(storageName) {
+//   return `http://storage.googleapis.com/${bucketName}/${encodeURIComponent(storageName)}`;
+// }
+
+
+
+const srcFilename = `img/gg.jpg`;
+const destFilename = `google.jpg`;
+
+const options = {
+  destination: destFilename,
+};
+
+bucket.file(srcFilename)
+  .download(options)
+  .then(() => {
+    console.log(
+      `gs://${bucketName}/${srcFilename} downloaded to ${destFilename}.`
+    );
+  })
+  .catch(err => {
+    console.error('ERROR:', err);
+  });
+
 
 
 /*
